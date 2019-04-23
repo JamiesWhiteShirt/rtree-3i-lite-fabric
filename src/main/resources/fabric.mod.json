@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "rtree-3i-lite-fabric",
+  "version": "${version}",
+  "name": "rtree-3i-lite for Fabric",
+  "description": "Provides the rtree-3i-lite library, version ${library_version}",
+  "authors": [
+    "JamiesWhiteShirt"
+  ],
+  "contact": {
+    "issues": "https://www.github.com/JamiesWhiteShirt/rtree-3i-lite-fabric/issues",
+    "sources": "https://www.github.com/JamiesWhiteShirt/rtree-3i-lite-fabric"
+  },
+  "license": "Apache-2.0",
+  "environment": "*",
+  "custom": {
+    "modmenu:api": true
+  }
+}

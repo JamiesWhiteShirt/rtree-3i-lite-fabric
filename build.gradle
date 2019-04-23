@@ -1,0 +1,71 @@
+plugins {
+    id 'java-library'
+	id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '4.0.3'
+	id 'signing'
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+}
+
+dependencies {
+    api "com.jamieswhiteshirt:rtree-3i-lite:${project.library_version}"
+}
+
+shadowJar {
+    classifier = null
+    dependencies {
+        exclude(dependency('com.google.guava:guava'))
+    }
+}
+
+processResources {
+	inputs.properties 'version': project.version, 'library_version': project.library_version
+
+	from(sourceSets.main.resources.srcDirs) {
+		include 'fabric.mod.json'
+		expand 'version': project.version, 'library_version': project.library_version
+	}
+
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'fabric.mod.json'
+	}
+}
+
+jar {
+	from 'LICENSE'
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) { publication ->
+            project.shadow.component(publication)
+		}
+	}
+
+	repositories {
+		maven {
+			url = 'https://maven.jamieswhiteshirt.com/libs-release/'
+
+			credentials {
+				username project.properties.mavenUser
+				password project.properties.mavenPassword
+			}
+		}
+	}
+}
+
+signing {
+	sign publishing.publications.mavenJava
+}
